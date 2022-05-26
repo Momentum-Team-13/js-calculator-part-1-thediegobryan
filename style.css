@@ -1,0 +1,27 @@
+.conatiner{
+    height: 1000px;
+    width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px;
+    background-color: red;
+    border: 2px solid black;
+}
+
+.button{
+    background-color: tan;
+    width: 25%;
+    box-sizing: border-box;
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+}
+button:active{
+    background-color: black;
+}
+#display{
+    width: 75%;
+}
