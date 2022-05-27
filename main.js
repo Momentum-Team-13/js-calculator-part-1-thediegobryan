@@ -1,6 +1,7 @@
 let numberArr = document.querySelectorAll('.number');
 let operationArr = document.querySelectorAll('.operation')
-let equalSign = document.querySelector('#equal')
+let equalBTN = document.querySelector('#equal')
+let clearBTN = document.querySelector('#clear')
 let display = document.querySelector('#display')
 
 
@@ -11,11 +12,11 @@ let nextOperation = ''; //stores operation sign
 let havedot = false;
 
 // BUGS TO FIX
-//=============================================
+//=============================================================
 // - You can have two decimals 
-// - You can't hit operation sign two times in a row
-// - Equal sign needs functionality
-// - Clear sign needs functionality
+// - hitting operation sign two times in a row creates an error
+// - You Can add unlimited Numbers
+// - You can type numbers right after hitting the numbers
 
 
 // function to listen for numbers
@@ -52,10 +53,26 @@ for (let operation of operationArr){
     }) 
 }
 
+// Listens for clear button to be pressed and resets everything
+clearBTN.addEventListener('click' , function(event){
+    display.innerText = '';
+    num1 = ''; 
+    num2 = ''; 
+    solution = ''; 
+    nextOperation = ''; 
+})
+
+//listens for equal sign to be hit;
+equalBTN.addEventListener('click', function(event){
+    if(num1 && num2){
+        calculation();
+    } 
+})
+
 // function to perform calculations
 function calculation(){
     if(nextOperation === 'X'){
-        solution = (parseFloat(num1) * parseFloat(num2));
+        solution = (parseFloat(num1) * parseFloat(num2));   
         display.innerText = solution;
         console.log(solution)
     } else if(nextOperation === '/'){
@@ -70,8 +87,3 @@ function calculation(){
     }
 }
 
-// BUGS TO FIX
-// - You can have two decimals 
-// - You can't hit operation sign two times in a row
-// - Equal sign needs functionality
-// - Clear sign needs functionality
