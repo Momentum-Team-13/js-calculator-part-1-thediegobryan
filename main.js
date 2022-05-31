@@ -3,37 +3,63 @@ let operationArr = document.querySelectorAll('.operation')
 let equalBTN = document.querySelector('#equal')
 let clearBTN = document.querySelector('#clear')
 let display = document.querySelector('#display')
+let plusMinus = document.querySelector('#plusMinus')
 
 
 let num1 = ''; //stores first number 
 let num2 = ''; //stores second number
 let solution = ''; //stores solution after equal button is hit
 let nextOperation = ''; //stores operation sign
-let havedot = false;
 
 // BUGS TO FIX
 //=============================================================
-// - You can have two decimals 
-// - hitting operation sign two times in a row creates an error
-// - You Can add unlimited Numbers
-// - You can type numbers right after hitting the numbers
+// - You can type numbers right after hitting equal sign
 
 
 // function to listen for numbers
 for (let num of numberArr){
     num.addEventListener('click', function (event){
+
         // checks to see if first number and next operation exist (not blank), then determines where to store user input
         if(num1 && nextOperation && !num2){
+            //determines how to process the decimal
+            if(event.target.innerText === '.'){
+                num1 += '0'
+            }
+
             display.innerText = '';
-            havedot = true;
             num2 += event.target.innerText;
-            display.innerText += event.target.innerText;
+            display.innerText = num2;
         } else if(num1 && nextOperation){
+            //determines how to process the decimal
+            if(event.target.innerText === '.' && num2.includes('.') === true){
+                return
+            }
+            //prevents user from inputting a number that is too long
+            if(num2.length >= 9){
+                return
+            }
+            
             num2 += event.target.innerText;
-            display.innerText += event.target.innerText;
-        } else {
+            display.innerText = num2;
+        } else if (num1 === solution.toString()){
+            num1 = event.target.innerText
+            display.innerText = num1;
+        }else {
+            //determines how to process the decimal
+            if(event.target.innerText === '.'){
+                if(num1.includes('.') === true){
+                    return
+                } else if(num1 === ''){
+                    num1 += '0';
+                }
+            }
+            //prevents user from inputting a number that is too long
+            if(num1.length >= 9){
+                return
+            }
             num1 += event.target.innerText;
-            display.innerText += event.target.innerText;
+            display.innerText = num1;
         }
     }) 
 }
@@ -41,13 +67,13 @@ for (let num of numberArr){
 // function to listen for operations
 for (let operation of operationArr){
     operation.addEventListener('click', function (event){
-        if(num1 && !nextOperation){
-            nextOperation = event.target.innerText;
-            display.innerText = '';
-        } else {
+
+        if(num1 && nextOperation && num2){
             calculation();
             num1 = solution.toString();
             num2 = '';
+            nextOperation = event.target.innerText;
+        } else {
             nextOperation = event.target.innerText;
         }
     }) 
@@ -66,7 +92,33 @@ clearBTN.addEventListener('click' , function(event){
 equalBTN.addEventListener('click', function(event){
     if(num1 && num2){
         calculation();
+        num1 = solution.toString();
+        num2 = '';
+        nextOperation = '';
     } 
+})
+
+//listens to plusMinus
+plusMinus.addEventListener('click', function(event){
+    if(num1 && nextOperation){
+        if(num2.includes('+/-') === true){
+            num2 = num2.slice(1);
+            display.innerText = num2;
+        } else {
+            num2 = '-' + num2;
+            display.innerText = num2;
+        }
+    } else {
+        if(num1.includes('-') === true){
+            console.log('includes negative')
+            num1 = num1.slice(1);
+            display.innerText = num1;
+        } else {
+            console.log('hello world')
+            num1 = '-' + num1;
+            display.innerText = num1;
+        }
+    }
 })
 
 // function to perform calculations
@@ -74,7 +126,6 @@ function calculation(){
     if(nextOperation === 'X'){
         solution = (parseFloat(num1) * parseFloat(num2));   
         display.innerText = solution;
-        console.log(solution)
     } else if(nextOperation === '/'){
         solution = (parseFloat(num1) / parseFloat(num2));
         display.innerText = solution;
@@ -84,6 +135,8 @@ function calculation(){
     } else if(nextOperation === '-'){
         solution = (parseFloat(num1) - parseFloat(num2));
         display.innerText = solution;
+    } else if(nextOperation === '%'){
+        solution = (parseFloat(num1) % parseFloat(num2));
+        display.innerText = solution;
     }
 }
-
