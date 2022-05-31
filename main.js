@@ -4,16 +4,12 @@ let equalBTN = document.querySelector('#equal')
 let clearBTN = document.querySelector('#clear')
 let display = document.querySelector('#display')
 let plusMinus = document.querySelector('#plusMinus')
-
+let button = document.querySelectorAll('.button');
 
 let num1 = ''; //stores first number 
 let num2 = ''; //stores second number
 let solution = ''; //stores solution after equal button is hit
 let nextOperation = ''; //stores operation sign
-
-// BUGS TO FIX
-//=============================================================
-// - You can type numbers right after hitting equal sign
 
 
 // function to listen for numbers
@@ -43,7 +39,18 @@ for (let num of numberArr){
             num2 += event.target.innerText;
             display.innerText = num2;
         } else if (num1 === solution.toString()){
-            num1 = event.target.innerText
+            num1 = '';
+            //determines how to process the decimal
+            if(event.target.innerText === '.'){
+                if(num1.includes('.') === true){
+                    return
+                } else if(num1 === ''){
+                    console.log('hello')
+                    num1 += '0';
+                }
+            }
+
+            num1 += event.target.innerText
             display.innerText = num1;
         }else {
             //determines how to process the decimal
@@ -140,3 +147,54 @@ function calculation(){
         display.innerText = solution;
     }
 }
+
+//listens for keyboard input
+
+window.addEventListener('keydown', (e)=>{
+    if(
+        e.key === '0' ||
+        e.key === '1' ||
+        e.key === '2' || 
+        e.key === '3' || 
+        e.key === '4' || 
+        e.key === '5' || 
+        e.key === '6' || 
+        e.key === '7' || 
+        e.key === '8' ||
+        e.key === '9' || 
+        e.key === '.'    
+    ){
+        clickButton(e.key);
+    } else if (
+        e.key === '/' ||
+        e.key === '%' ||
+        e.key === '-' ||
+        e.key === '+' 
+    ){
+        clickOperation(e.key);
+    } else if(e.key === '*'){
+        clickOperation('X');
+    } else if(e.key == 'Enter' || e.key === '='){
+        clickEqual();
+    }
+});
+
+function clickButton(key){
+    numberArr.forEach( button => {
+        if (button.innerText === key){
+            button.click();
+        };
+    })
+};
+
+function clickOperation (key){
+    operationArr.forEach(button => {
+        if (button.innerText === key){
+            button.click();
+        }
+    })
+};
+
+function clickEqual(){
+    equalBTN.click();
+};
