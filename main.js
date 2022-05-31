@@ -80,7 +80,7 @@ for (let operation of operationArr){
             num1 = solution.toString();
             num2 = '';
             nextOperation = event.target.innerText;
-        } else {
+        } else if (num1){
             nextOperation = event.target.innerText;
         }
     }) 
